@@ -1,18 +1,52 @@
-server:
-  restart: always
-  image: nginx
-  volumes:
-    - ./server/conf.d:/etc/nginx/conf.d
-    - ./app/static:/app/static
-  links:
-    - web:web
-  ports:
-    - "80:80"
+version: "2"
 
-web:
-  extends:
-    file: docker-compose.base.yml
-    service: web
-  expose:
-    - "8000"
-  command: gunicorn app:app -b :8000 --name app --log-level=debug --log-file=-
+services:
+  server:
+
+    restart: always
+    image: nginx
+    volumes:
+      - ./server/conf.d:/etc/nginx/conf.d
+      - ./app1/static:/app1/static
+      - ./app2/static:/app2/static
+    ports:
+      - "80:80"
+  
+  web1:
+    restart: always
+    build: ./app1
+    working_dir: /app1
+    volumes:
+      - ./app1:/app1
+    env_file:
+      - app1/app.env
+    expose:
+      - "8000"
+    command: gunicorn app:app -b :8000 --name app --log-level=debug --log-file=-
+  
+  web2:
+    restart: always
+    build: ./app2
+    working_dir: /app2
+    volumes:
+      - ./app2:/app2
+    env_file:
+      - app2/app.env
+    expose:
+      - "8000"
+    depends_on:
+        - redisdb
+    environment:
+        - REDIS_URL=redis://redisdb:6379
+    command: gunicorn app:app -b :8000 --name app --log-level=debug --log-file=-
+
+  redisdb:
+    image: redis
+    ports:
+        - "6379"
+    volumes:
+        - redis_data:/data
+    command: ["redis-server", "--appendonly", "yes"]
+
+volumes:
+    redis_data:

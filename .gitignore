@@ -3,3 +3,5 @@
 *.sqlite
 *.db
 app*
+static_host/*
+!static_host/.gitkeep

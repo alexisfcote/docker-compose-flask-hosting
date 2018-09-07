@@ -1,7 +1,7 @@
 Flask Docker Gunicorn Sample
 ============================
 
-Sample Docker setup using Flask, Gunicorn, and Nginx. Static files can be hosted in static_host folder, and in each app*/static folder.
+Sample Docker setup using Flask, Gunicorn, and Nginx. Static files can be hosted in static_host folder, and in each app*/static folder. app2 includes a redis database
 
 # Setup
 

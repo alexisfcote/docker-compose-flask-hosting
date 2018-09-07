@@ -1,0 +1,5 @@
+[submodule "app1"]
+	ignore = all
+[submodule "app2"]
+	path = app2
+	ignore = all

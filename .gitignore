@@ -2,6 +2,6 @@
 *.env
 *.sqlite
 *.db
-app*
+app*/*
 static_host/*
-!static_host/.gitkeep
+!**.gitkeep

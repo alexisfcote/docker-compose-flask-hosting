@@ -2,7 +2,6 @@ version: "2"
 
 services:
   server:
-
     restart: always
     image: nginx
     volumes:

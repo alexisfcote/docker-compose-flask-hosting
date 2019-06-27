@@ -1,1 +1,1 @@
-docker exec -i -t flasknginxgunicorndockersample_redisdb_1 /bin/bash
+docker exec -i -t flask-nginx-gunicorn-docker-sample_redisdb_1 /bin/bash

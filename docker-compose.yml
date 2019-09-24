@@ -32,6 +32,7 @@ services:
     working_dir: /app2
     volumes:
       - ./app2:/app2
+      - sqlitedata:/sqlitedata
     env_file:
       - app2/app.env
     expose:

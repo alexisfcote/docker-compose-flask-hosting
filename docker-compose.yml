@@ -8,6 +8,8 @@ services:
       - ./server/conf.d:/etc/nginx/conf.d
       - ./app1/static:/app1/static
       - ./app2/static:/app2/static
+      - ./app3/static:/app3/static
+      - ./app4/static:/app4/static
       - ./static_host:/static_host
     ports:
       - "80:80"
@@ -48,5 +50,33 @@ services:
         - redis_data:/data
     command: ["redis-server", "--appendonly", "yes"]
 
+  web3:
+    restart: always
+    build: ./app3
+    working_dir: /app3
+    volumes:
+      - ./app3:/app3
+    env_file:
+      - app3/app.env
+    expose:
+      - "8050"
+    command: gunicorn app:server -b :8050 --name server --log-level=debug --log-file=- --timeout 600 --workers=1 --capture-output
+
+  web4:
+    restart: always
+    build: ./app4
+    working_dir: /app4
+    volumes:
+      - ./app4:/app4
+      - sqlitedata:/sqlitedata
+    env_file:
+      - app4/app.env
+    expose:
+      - "8004"
+    command: gunicorn app:app -b :8004 --name app --log-level=debug --log-file=- --timeout 600 --workers=8 --capture-output
+
+
+
 volumes:
     redis_data:
+    sqlitedata:
